@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1031084058583",
+    "project_id": "block-fund",
+    "storage_bucket": "block-fund.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031084058583:android:6fa5f16021800b52aacd92",
+        "android_client_info": {
+          "package_name": "com.blockfund"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031084058583-3crklbb6kirucqvvka223jhbuseb8hbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blockfund",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1031084058583-6vtrigjmkq6t0kvkfr2iv821djo5gg1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoC3aUTn9VaKT2d5WNX6mPfim5h29rEzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031084058583-6vtrigjmkq6t0kvkfr2iv821djo5gg1h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

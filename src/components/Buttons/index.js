@@ -1,0 +1,20 @@
+import React from 'react';
+import BackButton from './BackButton';
+import ImageButton from './ImageButton';
+import SocialButton from './SocialButton';
+import TextButton from './TextButton';
+import IconButton from './IconButton';
+import RadioButton from './RadioButton';
+import PaperButton from './PaperButton';
+import FooterButton from './FooterButton';
+import DrawerButton from './DrawerButton';
+
+export const BckBtn = BackButton;
+export const ImgBtn = ImageButton;
+export const TxtBtn = TextButton;
+export const SocialBtn = SocialButton;
+export const RadioBtn = RadioButton;
+export const IconBtn = IconButton;
+export const PaperBtn = PaperButton;
+export const FooterBtn = FooterButton;
+export const DrawerBtn = DrawerButton;
