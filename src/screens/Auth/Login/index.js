@@ -31,13 +31,13 @@ const Login = ({navigation}) => {
   };
 
   const handleLogin = () => {
-    // if (email === '' || password === '')
-    //   return alert('Provide email or password!');
+    if (email === '' || password === '')
+      return alert('Provide email or password!');
 
-    // if (!checked) return alert('Please agree terms before procceding!');
-    // onSignIn(email, password, navigation);
+    if (!checked) return alert('Please agree terms before procceding!');
+    onSignIn(email, password, navigation);
     handleResetValue();
-    navigation.navigate('Tabs');
+    // navigation.navigate('Tabs');
   };
 
   const handleResetValue = () => {

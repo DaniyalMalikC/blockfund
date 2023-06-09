@@ -9,6 +9,9 @@ import CustomDrawer from './CustomDrawer';
 import Home from '../../screens/Tabs/Home';
 import AboutUs from '../../screens/Drawer/AboutUs';
 import PrivacyPolicy from '../../screens/Drawer/PrivacyPolicy';
+import Ticket from '../../screens/Drawer/Ticket';
+import Feedback from '../../screens/Drawer/Feedback';
+import WebViewScreens from '../../screens/WebViewScreens';
 
 // Assets
 import {colors} from '../../util/theme';
@@ -44,6 +47,7 @@ const DrawerNavigator = () => {
         component={Home}
         options={{drawerItemStyle: {display: 'none'}}}
       />
+      <Drawer.Screen name="WEBVIEW" component={WebViewScreens} />
       <Drawer.Screen
         name="ABOUT US"
         component={AboutUs}
@@ -52,6 +56,16 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="PRIVACY POLICY"
         component={PrivacyPolicy}
+        // options={{drawerIcon: () => <IconBtn img={icon4} size={20} />}}
+      />
+      <Drawer.Screen
+        name="TICKET"
+        component={Ticket}
+        // options={{drawerIcon: () => <IconBtn img={icon4} size={20} />}}
+      />
+      <Drawer.Screen
+        name="FEEDBACK"
+        component={Feedback}
         // options={{drawerIcon: () => <IconBtn img={icon4} size={20} />}}
       />
     </Drawer.Navigator>

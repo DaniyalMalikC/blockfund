@@ -15,6 +15,9 @@ import TabNavigator from '../TabNavigator';
 // Drawer Screens
 import DrawerNavigator from '../DrawerNavigator';
 
+// Transaction Screens
+import TransactionsView from '../../screens/Tabs/Transactions/TransactionView';
+
 // Screens
 // import JoinNow from "../../screens/Welcome/JoinNow";
 
@@ -29,6 +32,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Auth" component={AuthNavigator} />
       <Stack.Screen name="Tabs" component={TabNavigator} />
       <Stack.Screen name="Drawer" component={DrawerNavigator} />
+      {/* <Stack.Screen name="TransactionsView" component={TransactionsView} /> */}
     </Stack.Navigator>
   );
 };

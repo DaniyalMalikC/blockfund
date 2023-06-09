@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 // Screens
 import Home from '../DrawerNavigator';
-import Transactions from '../../screens/Tabs/Transactions';
+import Transactions from '../TransactionNavigator';
 import Notifications from '../../screens/Tabs/Notifications';
 import Profile from '../../screens/Tabs/Profile';
 import Empty from '../../screens/Empty';

@@ -5,28 +5,24 @@ import {MetaMaskAction} from '../../../context/MetaMaskContext';
 import {height, width} from '../../../util/globalStyles';
 import {TextInput} from '../../../components/InputField';
 import {ImgBtn} from '../../../components/Buttons';
+import {H4} from '../../../components/Text';
 
-const Ticket = () => {
-  const [subject, setSubject] = useState('');
+const Feedback = () => {
   const [desc, setDesc] = useState('');
-  const {addTicket} = useContext(MetaMaskAction);
-  const handleTicket = () => {
-    if (subject === '' || desc === '') {
+  const {addFeedback} = useContext(MetaMaskAction);
+  const handleFeedback = () => {
+    if (desc === '') {
       return alert('Please fill all inputs!');
     }
-    addTicket();
+    addFeedback();
   };
   return (
-    <BG2 title="Ticket">
+    <BG2 title="Feedback">
       <View style={styles.container}>
-        <TextInput
-          placeholder="Subject"
-          value={subject}
-          onChangeText={setSubject}
-        />
+        <H4 text="Submit your valueable Feedback!" />
 
         <TextInput
-          placeholder="Ticket Addressing"
+          placeholder="Feedback Addressing"
           value={desc}
           onChangeText={setDesc}
           multiline={true}
@@ -34,8 +30,8 @@ const Ticket = () => {
         />
         <View style={{marginVertical: 20}}>
           <ImgBtn
-            label="Submit Ticket"
-            onPress={handleTicket}
+            label="Submit Feedback"
+            onPress={handleFeedback}
             width={width - 100}
           />
         </View>
@@ -44,7 +40,7 @@ const Ticket = () => {
   );
 };
 
-export default Ticket;
+export default Feedback;
 
 const styles = StyleSheet.create({
   container: {

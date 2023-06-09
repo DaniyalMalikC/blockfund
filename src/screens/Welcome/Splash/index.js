@@ -17,6 +17,7 @@ const Splash = ({navigation}) => {
 
   const registerSplash = async () => {
     const getUser = await AsyncStorage.getItem('User');
+    console.log('getUser => ', getUser);
     // const verification = await AsyncStorage.getItem('EmailVerified');
     // const emailCheck = !JSON.parse(verification);
 

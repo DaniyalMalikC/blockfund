@@ -26,7 +26,9 @@ export class GeneralUtil {
       alert('Provide some date and time!');
     }
     const date = new Date(datetime);
-    const currentMonth = this.months(date.getMonth());
+    const currentMonth = this.months(
+      date.getMonth() > 9 ? date.getMonth() - 1 : date.getMonth(),
+    );
     const currentDate = this.numberFormatter(date.getDate());
     const currentYear = date.getFullYear();
     let currentHour = this.numberFormatter(date.getHours());

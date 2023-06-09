@@ -17,9 +17,12 @@ const AuthContextProvider = ({children}) => {
   const [addressDisable, setAddressDisable] = useState(false);
   const [coordinates, setCoordinates] = useState({});
 
+  const [receivers, setReceivers] = useState([]);
+
   useEffect(() => {
     userRegistry();
     getLocation();
+    getReceiver();
   }, []);
 
   const getLocation = async () => {
@@ -105,9 +108,11 @@ const AuthContextProvider = ({children}) => {
           .collection('Users')
           .doc(User.uid)
           .get()
-          .then(doc => {
+          .then(async doc => {
             const UserData = doc.data();
             setUser(UserData);
+            await AsyncStorage.setItem('User', JSON.stringify(UserData));
+            console.log('UserData => ', UserData);
             navigation.navigate('Tabs');
           });
       })
@@ -189,6 +194,26 @@ const AuthContextProvider = ({children}) => {
       });
   };
 
+  const getReceiver = () => {
+    firestore()
+      .collection('Receiver')
+      .onSnapshot(docSnap => {
+        if (docSnap && !docSnap?.empty) {
+          const dataSet = docSnap.docs.map(data => {
+            const recv = data.data();
+            return {
+              name: recv.name,
+              country: recv.country,
+              accountNumber: recv.accountNumber,
+              contactDetails: recv.contactDetails,
+              avatar: recv.avatar,
+            };
+          });
+          setReceivers(dataSet);
+        }
+      });
+  };
+
   const onSignOut = async navigation => {
     AsyncStorage.removeItem('User');
     AsyncStorage.clear();
@@ -210,6 +235,7 @@ const AuthContextProvider = ({children}) => {
         address,
         addressDisable,
         coordinates,
+        receivers,
       }}>
       <AuthAction.Provider value={{onSignOut, onSignUp, onSignIn}}>
         {children}

@@ -28,6 +28,8 @@ const InputField = props => {
     value,
     onChangeText,
     keyboardType,
+    multiline,
+    numberOfLines,
   } = props;
   return (
     <View style={!title && {marginVertical: 5}}>
@@ -47,6 +49,8 @@ const InputField = props => {
         mode={mode || 'outlined'}
         secureTextEntry={secureTextEntry || false}
         keyboardType={keyboardType}
+        multiline={multiline}
+        numberOfLines={numberOfLines}
         left={
           (leftIcon || leftImg) && (
             <TextInput.Icon
