@@ -90,11 +90,10 @@ const MetaMaskContextProvider = ({children}) => {
         method: 'wallet_addEthereumChain',
         params: [
           {
-            chainId: '0x89',
-            chainName: 'Polygon',
-            blockExplorerUrls: ['https://polygonscan.com'],
-            nativeCurrency: {symbol: 'MATIC', decimals: 18},
-            rpcUrls: ['https://polygon-rpc.com/'],
+            chainId: '31337',
+            chainName: 'AWS-Hardhat',
+            nativeCurrency: {symbol: 'ETH', decimals: 18},
+            rpcUrls: ['http://54.209.148.118:8545'],
           },
         ],
       });
@@ -113,7 +112,7 @@ const MetaMaskContextProvider = ({children}) => {
         // Give a user friendly name to the specific contract you are signing for.
         name: 'Ether Mail',
         // If name isn't enough add verifying contract to make sure you are establishing contracts with the proper entity
-        verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+        verifyingContract: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
         // Just let's you know the latest version. Definitely make sure the field name is correct.
         version: '1',
       },
@@ -185,7 +184,7 @@ const MetaMaskContextProvider = ({children}) => {
   };
 
   const sendTransaction = async () => {
-    const to = '0x0000000000000000000000000000000000000000';
+    const to = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
     const transactionParameters = {
       to, // Required except during contract publications.
       from: ethereum.selectedAddress, // must match user's active address.
