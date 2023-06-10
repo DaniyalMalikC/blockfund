@@ -14,7 +14,7 @@ import Loader from '../../../components/Loader';
 const Home = () => {
   const {user} = useContext(AuthContext);
   const {ethAddress, connected} = useContext(MetaMaskContext);
-  const {handleMetaMask} = useContext(MetaMaskAction);
+  const {connect} = useContext(MetaMaskAction);
   const [loader, setLoader] = useState(false);
 
   const handleMetaMaskConnection = () => {
@@ -23,7 +23,7 @@ const Home = () => {
     setTimeout(() => {
       setLoader(false);
     }, 10000);
-    return handleMetaMask();
+    return connect();
   };
 
   console.log('loader => ', loader);

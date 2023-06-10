@@ -30,7 +30,7 @@ const TransactionModalize = ({onClose}, ref) => {
     setDesc('');
   };
 
-  console.log(receivers);
+  // console.log(receivers);
 
   return (
     <Modalize
