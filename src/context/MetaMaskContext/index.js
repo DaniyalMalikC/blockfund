@@ -78,8 +78,10 @@ const MetaMaskContextProvider = ({children}) => {
       const result = await ethereum.request({method: 'eth_requestAccounts'});
       console.log('RESULT', result?.[0]);
       setAccount(result?.[0]);
+      setConnected(true);
       getBalance();
     } catch (e) {
+      setConnected(false);
       console.log('ERROR', e);
     }
   };
@@ -354,6 +356,8 @@ const MetaMaskContextProvider = ({children}) => {
         loader,
         // signMessage,
         response,
+        account,
+        balance,
       }}>
       <MetaMaskAction.Provider
         value={{
@@ -365,6 +369,8 @@ const MetaMaskContextProvider = ({children}) => {
           getBalance,
           sendTransaction,
           connect,
+          exampleRequest,
+          sign,
         }}>
         {children}
       </MetaMaskAction.Provider>

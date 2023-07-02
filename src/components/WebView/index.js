@@ -56,27 +56,27 @@ const Webview = props => {
     webViewRef.current.goForward();
   };
 
-  const injectedScript = `
-(function () {
-  function createEthereumObject() {
-    // Define your Ethereum object here
-    var ethereum = {
-      // Define Ethereum object properties and methods
-    };
-    return ethereum;
-  }
+  //   const injectedScript = `
+  // (function () {
+  //   function createEthereumObject() {
+  //     // Define your Ethereum object here
+  //     var ethereum = {
+  //       // Define Ethereum object properties and methods
+  //     };
+  //     return ethereum;
+  //   }
 
-  // Create the Ethereum object and attach it to the global window object
-  window.ethereum = createEthereumObject();
-})();
-`;
+  //   // Create the Ethereum object and attach it to the global window object
+  //   window.ethereum = createEthereumObject();
+  // })();
+  // `;
 
-  const onMessage = event => {
-    const data = JSON.parse(event.nativeEvent.data);
-    console.log('data', data);
-    // Handle the received message from the WebView here
-    // For example, you could perform actions based on the message data
-  };
+  // const onMessage = event => {
+  //   const data = JSON.parse(event.nativeEvent.data);
+  //   console.log('data', data);
+  //   // Handle the received message from the WebView here
+  //   // For example, you could perform actions based on the message data
+  // };
 
   return (
     <SafeAreaView edges={['right', 'left']} style={styles.contianer}>
@@ -109,9 +109,9 @@ const Webview = props => {
           ref={webViewRef}
           style={styles.contianer}
           containerStyle={styles.contianer}
-          injectedJavaScript={injectedScript}
+          // injectedJavaScript={injectedScript}
+          // onMessage={onMessage}
           javaScriptEnabled={true}
-          onMessage={onMessage}
           renderLoading={() => LoadingIndicatorView()}
           startInLoadingState={true}
           domStorageEnabled={true}

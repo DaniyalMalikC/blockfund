@@ -13,7 +13,8 @@ import Loader from '../../../components/Loader';
 
 const Home = () => {
   const {user} = useContext(AuthContext);
-  const {ethAddress, connected} = useContext(MetaMaskContext);
+  const {ethAddress, connected, response, account, balance} =
+    useContext(MetaMaskContext);
   const {connect} = useContext(MetaMaskAction);
   const [loader, setLoader] = useState(false);
 
@@ -59,12 +60,20 @@ const Home = () => {
                 onPress={handleMetaMaskConnection}
               />
             </View>
-            {ethAddress && (
+            {account && (
               <View
                 style={{
                   marginVertical: 10,
                 }}>
-                <H4 text={'Meta Mask Address: ' + ethAddress} />
+                <H4 text={'Meta Mask Address: ' + account} />
+              </View>
+            )}
+            {balance && (
+              <View
+                style={{
+                  marginVertical: 10,
+                }}>
+                <H4 text={'Available Balance: ' + balance} />
               </View>
             )}
           </View>

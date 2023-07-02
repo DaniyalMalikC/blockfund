@@ -23,13 +23,13 @@
             <!-- <action android:name="android.intent.action.VIEW" />
             <data android:scheme="wc"/> -->
         </intent-filter>
-        <intent-filter android:label="filter_react_native_deep_link">
+        <!-- <intent-filter android:label="filter_react_native_deep_link">
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
     <data
       android:host="blockfund"
-      android:scheme="eth.blockfund" />
+      android:scheme="eth.blockfund" /> -->
       </activity>
     </application>
 </manifest>
