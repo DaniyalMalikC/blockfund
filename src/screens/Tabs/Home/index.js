@@ -15,12 +15,12 @@ const Home = () => {
   const {user} = useContext(AuthContext);
   const {ethAddress, connected, response, account, balance} =
     useContext(MetaMaskContext);
-  const {connect} = useContext(MetaMaskAction);
+  const {connect, getBalance, sign, sendTransaction} =
+    useContext(MetaMaskAction);
   const [loader, setLoader] = useState(false);
 
   const handleMetaMaskConnection = () => {
     setLoader(true);
-    alert('connecting...');
     setTimeout(() => {
       setLoader(false);
     }, 10000);
@@ -59,6 +59,31 @@ const Home = () => {
                 disabled={connected}
                 onPress={handleMetaMaskConnection}
               />
+              {account && (
+                <PaperBtn
+                  label={'Get Balance'}
+                  mode="contained"
+                  height={50}
+                  disabled={balance}
+                  onPress={getBalance}
+                />
+              )}
+              {account && (
+                <PaperBtn
+                  label={'Ethereum Sign'}
+                  mode="contained"
+                  height={50}
+                  onPress={sign}
+                />
+              )}
+              {account && (
+                <PaperBtn
+                  label={'Send Transaction'}
+                  mode="contained"
+                  height={50}
+                  onPress={sendTransaction}
+                />
+              )}
             </View>
             {account && (
               <View

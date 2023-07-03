@@ -52,7 +52,10 @@ const MetaMaskContextProvider = ({children}) => {
   const [balance, setBalance] = useState();
 
   const getBalance = async () => {
+    console.log('GET BALANCE => ', ethereum.selectedAddress);
+
     if (!ethereum.selectedAddress) {
+      console.log('NO ADDRESS');
       return;
     }
     const bal = await provider.getBalance(ethereum.selectedAddress);
@@ -62,11 +65,9 @@ const MetaMaskContextProvider = ({children}) => {
 
   useEffect(() => {
     ethereum.on('chainChanged', chain => {
-      console.log(chain);
       setChain(chain);
     });
     ethereum.on('accountsChanged', accounts => {
-      console.log(accounts);
       setAccount(accounts?.[0]);
 
       getBalance();
@@ -76,7 +77,6 @@ const MetaMaskContextProvider = ({children}) => {
   const connect = async () => {
     try {
       const result = await ethereum.request({method: 'eth_requestAccounts'});
-      console.log('RESULT', result?.[0]);
       setAccount(result?.[0]);
       setConnected(true);
       getBalance();
@@ -106,15 +106,15 @@ const MetaMaskContextProvider = ({children}) => {
     }
   };
 
-  const sign = async () => {
+  const sign = async amount => {
     const msgParams = JSON.stringify({
       domain: {
         // Defining the chain aka Rinkeby testnet or Ethereum Main Net
         chainId: parseInt(ethereum.chainId, 16),
         // Give a user friendly name to the specific contract you are signing for.
-        name: 'Ether Mail',
+        name: 'BlockFund',
         // If name isn't enough add verifying contract to make sure you are establishing contracts with the proper entity
-        verifyingContract: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+        verifyingContract: '0x43951f33e746B93919c23fa095DC58c31A3BBccA',
         // Just let's you know the latest version. Definitely make sure the field name is correct.
         version: '1',
       },
@@ -127,22 +127,24 @@ const MetaMaskContextProvider = ({children}) => {
          - This is DApp Specific
          - Be as explicit as possible when building out the message schema.
         */
-        contents: 'Hello, Bob!',
-        attachedMoneyInEth: 4.2,
+        contents: 'Hello, BlockFund!',
+        attachedMoneyInEth: 0.0001,
         from: {
-          name: 'Cow',
+          name: user.name,
           wallets: [
-            '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-            '0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF',
+            ethereum.selectedAddress,
+            // '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
+            // '0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF',
           ],
         },
         to: [
           {
-            name: 'Bob',
+            name: 'BlockFund',
             wallets: [
-              '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
-              '0xB0BdaBea57B0BDABeA57b0bdABEA57b0BDabEa57',
-              '0xB0B0b0b0b0b0B000000000000000000000000000',
+              '0x43951f33e746B93919c23fa095DC58c31A3BBccA',
+              // '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+              // '0xB0BdaBea57B0BDABeA57b0bdABEA57b0BDabEa57',
+              // '0xB0B0b0b0b0b0B000000000000000000000000000',
             ],
           },
         ],
@@ -182,11 +184,12 @@ const MetaMaskContextProvider = ({children}) => {
     var method = 'eth_signTypedData_v4';
 
     const resp = await ethereum.request({method, params});
+    console.log('RESP', resp);
     setResponse(resp);
   };
 
   const sendTransaction = async () => {
-    const to = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
+    const to = '0x43951f33e746B93919c23fa095DC58c31A3BBccA';
     const transactionParameters = {
       to, // Required except during contract publications.
       from: ethereum.selectedAddress, // must match user's active address.
@@ -202,6 +205,7 @@ const MetaMaskContextProvider = ({children}) => {
       });
 
       setResponse(txHash);
+      console.log('txHash => ', txHash);
     } catch (e) {
       console.log(e);
     }
@@ -225,7 +229,7 @@ const MetaMaskContextProvider = ({children}) => {
     //       setDefaultAccount(result[0]);
     //     })
     //     .catch(error => {
-    //       setErrorMessage(error.message);
+    //       setErrorMessage(error.messa6ge);
     //     });
     // } else if (!window.ethereum) {
     //   console.log('Need to install MetaMask');
