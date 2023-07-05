@@ -1,4 +1,10 @@
 {
   "name": "BlockFund",
-  "displayName": "BlockFund"
+  "displayName": "BlockFund",
+  "android": {
+    "package": "com.blockfund"
+  },
+  "ios": {
+    "bundleIdentifier": "com.blockfund"
+  }
 }

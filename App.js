@@ -13,6 +13,8 @@ import StackNavigator from './src/routes/StackNavigator';
 
 import {Platform, StatusBar} from 'react-native';
 import {colors} from './src/util/theme';
+import {ThirdwebProvider, metamaskWallet} from '@thirdweb-dev/react-native';
+import {Goerli} from '@thirdweb-dev/chains';
 
 const App = () => {
   return (
@@ -25,16 +27,22 @@ const App = () => {
     //   storageOptions={{
     //     asyncStorage: AsyncStorage,
     //   }}>
-    <ContextProvider>
-      <NavigationContainer>
-        <ModalizeWrapper>
-          {Platform.OS === 'android' && (
-            <StatusBar backgroundColor={colors.primary} />
-          )}
-          <StackNavigator />
-        </ModalizeWrapper>
-      </NavigationContainer>
-    </ContextProvider>
+
+    <ThirdwebProvider
+      activeChain={Goerli}
+      supportedChains={[Goerli]}
+      supportedWallets={[metamaskWallet()]}>
+      <ContextProvider>
+        <NavigationContainer>
+          <ModalizeWrapper>
+            {Platform.OS === 'android' && (
+              <StatusBar backgroundColor={colors.primary} />
+            )}
+            <StackNavigator />
+          </ModalizeWrapper>
+        </NavigationContainer>
+      </ContextProvider>
+    </ThirdwebProvider>
     // </WalletConnectProvider>
   );
 };

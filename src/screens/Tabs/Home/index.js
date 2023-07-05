@@ -10,6 +10,7 @@ import {
   MetaMaskContext,
 } from '../../../context/MetaMaskContext';
 import Loader from '../../../components/Loader';
+import {ConnectWallet} from '@thirdweb-dev/react-native';
 
 const Home = () => {
   const {user} = useContext(AuthContext);
@@ -52,13 +53,14 @@ const Home = () => {
               <Para text="Before proceeding please connect to a MetaMask wallet in order to create transactions." />
             </View>
             <View style={{marginVertical: 20}}>
-              <PaperBtn
+              {/* <PaperBtn
                 label={connected ? 'Connected!' : 'Connect to MetaMask'}
                 mode="contained"
                 height={50}
                 disabled={connected}
                 onPress={handleMetaMaskConnection}
-              />
+              /> */}
+              <ConnectWallet />
               {account && (
                 <PaperBtn
                   label={'Get Balance'}

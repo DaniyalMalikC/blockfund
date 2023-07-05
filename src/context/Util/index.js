@@ -41,5 +41,12 @@ export class GeneralUtil {
       : `${currentMonth} ${currentDate}, ${currentYear} at ${currentHour}:${currentMinutes} ${currentDayNight}`;
   };
 
+  static transactionStatus = status => {
+    if (status) {
+      return GeneralUtil.datetimeFormatter(status?.toDate(), true);
+    }
+    return 'Pending';
+  };
+
   static userDataHandler = obj => {};
 }

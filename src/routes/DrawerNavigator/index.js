@@ -47,7 +47,7 @@ const DrawerNavigator = () => {
         component={Home}
         options={{drawerItemStyle: {display: 'none'}}}
       />
-      <Drawer.Screen name="WEBVIEW" component={WebViewScreens} />
+      {/* <Drawer.Screen name="WEBVIEW" component={WebViewScreens} /> */}
       <Drawer.Screen
         name="ABOUT US"
         component={AboutUs}
@@ -58,11 +58,11 @@ const DrawerNavigator = () => {
         component={PrivacyPolicy}
         // options={{drawerIcon: () => <IconBtn img={icon4} size={20} />}}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="TICKET"
         component={Ticket}
         // options={{drawerIcon: () => <IconBtn img={icon4} size={20} />}}
-      />
+      /> */}
       <Drawer.Screen
         name="FEEDBACK"
         component={Feedback}

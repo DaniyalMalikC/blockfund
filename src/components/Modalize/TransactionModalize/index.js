@@ -8,26 +8,40 @@ import {H2} from '../../Text';
 import {ImgBtn, SocialBtn} from '../../Buttons';
 import {ReceiverModal} from '../../Modal';
 import {AuthContext} from '../../../context/AuthContext';
-import {MetaMaskAction} from '../../../context/MetaMaskContext';
+import {
+  MetaMaskAction,
+  MetaMaskContext,
+} from '../../../context/MetaMaskContext';
+import {Web3Button, useAddress, useContract} from '@thirdweb-dev/react-native';
+import {ethers} from 'ethers';
 
 const TransactionModalize = ({onClose}, ref) => {
-  const {receivers} = useContext(AuthContext);
+  const {receivers, user} = useContext(AuthContext);
+  const {contractAddress} = useContext(MetaMaskContext);
   const {addTransaction} = useContext(MetaMaskAction);
   const [amount, setAmount] = useState('');
   const [desc, setDesc] = useState('');
 
-  const handleNext = () => {
+  const address = useAddress();
+
+  const handleNext = contract => {
     if (desc === '' || amount === '') {
       return alert('Fill in inputs for transaction!');
     }
+    const recepient = desc;
+    const name = user.name;
+
+    contract.call('createDonation', [recepient, name], {
+      value: ethers.utils.parseEther(amount.toString()),
+    });
+
     addTransaction({recepient: desc, amount: amount});
-    handleReset();
-    onClose();
   };
 
   const handleReset = () => {
     setAmount('');
     setDesc('');
+    onClose();
   };
 
   // console.log(receivers);
@@ -50,6 +64,8 @@ const TransactionModalize = ({onClose}, ref) => {
             onChangeText={setAmount}
             leftIcon="ethereum"
             rightIcon="currency-eth"
+            keyboardType="numeric"
+            maxLength={6}
           />
 
           <TextInput
@@ -68,8 +84,33 @@ const TransactionModalize = ({onClose}, ref) => {
               />
             ))}
           </View>
-          <View style={{marginVertical: 10}}>
-            <ImgBtn label="Transect" width="50%" onPress={handleNext} />
+          <View
+            style={{
+              marginVertical: 10,
+              borderWidth: 1,
+              borderRadius: 5,
+              width: '50%',
+              alignSelf: 'center',
+            }}>
+            {address ? (
+              <Web3Button
+                contractAddress={contractAddress}
+                action={contract => handleNext(contract)}
+                // action={contract => {
+                //   const recepient = desc;
+                //   const name = user.name;
+
+                //   contract.call('createDonation', [recepient, name], {
+                //     value: ethers.utils.parseEther(amount.toString()),
+                //   });
+                // }}
+                onSuccess={() => handleReset()}>
+                {'Transect'}
+              </Web3Button>
+            ) : (
+              <Text>Please Connect Wallet</Text>
+            )}
+            {/* <ImgBtn label="Transect" width="50%" onPress={handleNext} /> */}
           </View>
         </View>
       </View>

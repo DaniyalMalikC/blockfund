@@ -22,10 +22,12 @@ const ImageButton = ({
   iconSize,
   iconStyle,
   hide,
+  disabled,
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       style={[hide && {display: 'none'}, globalStyles.centeredContainer]}>
       <Image
         source={img || colorScheme === 'dark' ? DarkBTN : LightBTN}

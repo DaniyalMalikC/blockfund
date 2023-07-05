@@ -12,7 +12,7 @@ import {MetaMaskContext} from '../../../context/MetaMaskContext';
 const Transactions = () => {
   const {transactions} = useContext(MetaMaskContext);
   const navigation = useNavigation();
-  const [search, setSearch] = useState('');
+  // const [search, setSearch] = useState('');
   const handleNavigation = data => {
     navigation.navigate('TransactionsView', {data: data});
   };
@@ -20,19 +20,21 @@ const Transactions = () => {
   return (
     <BG2 title="Transactions">
       <View style={styles.container}>
-        <Searchbar value={search} onChangeText={setSearch} />
+        {/* <Searchbar value={search} onChangeText={setSearch} /> */}
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.list}>
-            {transactions?.map(data => {
-              return (
-                <ListItem
-                  icon="ethereum"
-                  title={'Eth: ' + data.amount}
-                  desc={'transacted to ' + data.recipient}
-                  onPress={() => handleNavigation(data)}
-                />
-              );
-            })}
+            {transactions.length > 0 &&
+              transactions?.map((data, index) => {
+                return (
+                  <ListItem
+                    key={data.transactionId}
+                    icon="ethereum"
+                    title={'Eth: ' + data.amount}
+                    desc={'transacted to ' + data.recipient}
+                    onPress={() => handleNavigation(data)}
+                  />
+                );
+              })}
           </View>
         </ScrollView>
       </View>

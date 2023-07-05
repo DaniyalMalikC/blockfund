@@ -8,7 +8,6 @@ import {colors} from '../../../util/theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ListItem = ({
-  key,
   title,
   desc,
   onPress,
@@ -35,7 +34,6 @@ const ListItem = ({
   return (
     <List.Item
       disabled={disabled}
-      key={key}
       title={title}
       description={desc}
       style={[styles.listItem, disabled && {backgroundColor: colors.light}]}
@@ -85,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     // borderWidth: 0.25,
     paddingHorizontal: 20,
+    marginVertical: 5,
     height: 60,
     justifyContent: 'center',
     alignItems: 'center',

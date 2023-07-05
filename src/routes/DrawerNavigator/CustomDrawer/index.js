@@ -12,12 +12,16 @@ import {colorScheme, theme} from '../../../util/theme';
 import Card_dark from '../../../assets/shades/dark.png';
 import Card_light from '../../../assets/shades/light.png';
 import {AuthAction} from '../../../context/AuthContext';
-import {useNavigation} from '@react-navigation/native';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
+import {useDisconnect} from '@thirdweb-dev/react-native';
 
 const CustomDrawer = props => {
   const {onSignOut} = useContext(AuthAction);
+  const disconnect = useDisconnect();
   const navigation = useNavigation();
   const handleLogout = () => {
+    disconnect();
+    navigation.dispatch(DrawerActions.toggleDrawer());
     onSignOut(navigation);
   };
   return (
@@ -39,7 +43,7 @@ const CustomDrawer = props => {
       <View style={styles.button}>
         <ImgBtn
           icon="power"
-          label="LOGOUT"
+          label={'LOGOUT'}
           width="100%"
           iconSize={24}
           onPress={handleLogout}

@@ -1,7 +1,8 @@
+require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '12.4'
+platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
 
   # pod 'Firebase', :modular_headers => true
@@ -9,10 +10,34 @@ install! 'cocoapods', :deterministic_uuids => false
   # pod 'GoogleUtilities', :modular_headers => true
   # pod 'FirebaseCore', :modular_headers => true
   # pod 'FirebaseStorage', :modular_headers => true
+  # pod 'FirebaseStorage-library', :modular_headers => true
 
 
 target 'BlockFund' do
-  config = use_native_modules!
+  use_expo_modules!
+  post_integrate do |installer|
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
+  end
+  # config = use_native_modules!
   use_modular_headers!
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
@@ -21,7 +46,7 @@ target 'BlockFund' do
   flags = get_default_flags()
 
   use_react_native!(
-    :path => config[:reactNativePath],
+    # :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
     # Upcoming versions of React Native may rely on get_default_flags(), but
     # we make it explicit here to aid in the React Native upgrade process.

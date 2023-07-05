@@ -4,12 +4,14 @@ import {
   StyleSheet,
   ImageBackground,
   ScrollView,
+  Platform,
 } from 'react-native';
-import React, {useContext} from 'react';
-import {H4, H2, H1, Para} from '../../../../components/Text';
+import React, {useContext, useRef} from 'react';
+import {H4, H2, H1, Para, H5, H3} from '../../../../components/Text';
 import {IconBtn} from '../../../../components/Buttons';
 import {BG2} from '../../../../components/Backgrounds';
 import {height, width} from '../../../../util/globalStyles';
+import storage from '@react-native-firebase/storage';
 
 // Assets
 import gold from '../../../../assets/nft-design/gold.png';
@@ -17,68 +19,182 @@ import silver from '../../../../assets/nft-design/silver.png';
 import bronze from '../../../../assets/nft-design/bronze.png';
 import {AuthContext} from '../../../../context/AuthContext';
 import {useRoute} from '@react-navigation/native';
+import {
+  MetaMaskAction,
+  MetaMaskContext,
+} from '../../../../context/MetaMaskContext';
+import {
+  Web3Button,
+  useAddress,
+  useContract,
+  useMintNFT,
+  useStorageUpload,
+} from '@thirdweb-dev/react-native';
+import ViewShot from 'react-native-view-shot';
+import {IPFSFileUpload} from '../../../../constant';
 
 const TransactionView = () => {
   const {user} = useContext(AuthContext);
+  const {NFTContractAddress} = useContext(MetaMaskContext);
+  const {updateClaimedTransection} = useContext(MetaMaskAction);
+
+  const snapRef = useRef();
+
   const route = useRoute();
   const {data} = route.params;
-  const id = data.transactionId.split(0, 9);
+  const id = data.transactionId.slice(3, 9);
+
+  const bg =
+    data?.amount <= '0.0001' ? bronze : data?.amount <= '0.015' ? silver : gold;
+  const receiptType =
+    data?.amount <= '0.0001'
+      ? 'bronze'
+      : data?.amount <= '0.015'
+      ? 'silver'
+      : 'gold';
+
+  const {mutateAsync: upload} = useStorageUpload();
+
+  const address = useAddress();
+
+  // const {contract} = useContract(NFTContractAddress);
+  // const {mutateAsync: mintNft, isLoading, error} = useMintNFT(contract);
+
+  const handleClaimNFT = async contract => {
+    await snapRef.current.capture().then(async uri => {
+      console.log('do something with ', uri);
+
+      // const imageURI = await IPFSFileUpload(uri);
+
+      // imageURI
+      //   .then(res => {
+      //     console.log('res ', res);
+      //   })
+      //   .catch(err => {
+      //     console.error('err ', err);
+      //   });
+
+      // console.log('imageURI ', imageURI);
+      const uploadUri =
+        Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+      await storage().ref(`NFT/BlockFund-${id}`).putFile(uploadUri);
+
+      const metadata = 'ipfs://Qmb6taWrn1JWHu1gfXg31gv1z21HydSr43CzhkCe7E3sbL';
+      // await IPFSFileUpload(
+      //   uri,
+      //   data?.amount,
+      //   data?.recepient,
+      //   user?.name,
+      // );
+      // metadata
+      //   .then(res => {
+      //     console.log('res ', res);
+      //   })
+      //   .catch(err => {
+      //     console.error('err ', err);
+      //   });
+
+      // console.log('metadata ', metadata);
+
+      contract.call('mintNFT', [address, metadata]);
+      updateClaimedTransection(data.transactionId, data);
+
+      // mintNft({
+      //   image:
+      //     ,
+      //   to: address, // Use useAddress hook to get current wallet address
+      // });
+
+      // console.log(isLoading, error);
+    });
+  };
+
   return (
     <BG2 title="Transaction Detail">
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.reciptContainer}>
             <H4 text="You had Created a Transection" />
-            <H2 text={'Your Transaction ID: \n' + id} />
+            <H5 text="Your Transaction ID:" />
+            <H2 text={'BlockFund-' + id} />
           </View>
           <View style={styles.transectionTime}>
             <IconBtn icon="circle" style={{marginRight: 10}} />
             <View>
               <H4 text="Transaction Created At:" />
-              <H2 text={'Your Transaction ID: ' + data.createdAt} />
+              <H2 text={data.createdAt} />
             </View>
           </View>
           <View style={styles.transectionTime}>
             <IconBtn icon="circle" style={{marginRight: 10}} />
             <View>
               <H4 text="Approved by BlockFund on:" />
-              <H2 text={'Your Transaction ID: ' + data.approvedAt} />
+              <H2 text={data.approvedAt} />
             </View>
           </View>
           <View style={styles.transectionTime}>
             <IconBtn icon="circle" style={{marginRight: 10}} />
             <View>
               <H4 text="Transected to :" />
-              <H2 text={'Your Transaction ID: ' + data.completedAt} />
+              <H2 text={data.completedAt} />
             </View>
           </View>
-          <View style={styles.reciptContainer}>
-            <H2 text="Transaction Created Successfully" />
-            <H1 text="NFT Recipt:" />
-            <ImageBackground source={gold} style={styles.recipt}>
-              <View style={styles.reciptBody}>
-                <View>
-                  <H4 text="Our Valuable Fund Raiser:" />
-                  <H2 text={user.name} />
-                </View>
-                <View>
-                  <H4 text="Funded to:" />
-                  <H2 text={data.recipient} />
-                </View>
-              </View>
+          {data.approvedAt !== 'Pending' && (
+            <View style={styles.reciptContainer}>
+              <H2 text="Transaction Created Successfully" />
+              <H1 text={data?.claimed ? 'Claimed NFT:' : 'Claim NFT:'} />
+              {!data?.claimed && (
+                <Web3Button
+                  contractAddress={NFTContractAddress}
+                  action={contract => handleClaimNFT(contract)}>
+                  Claim NFT
+                </Web3Button>
+              )}
+              <ViewShot
+                ref={snapRef}
+                options={{
+                  fileName: 'BlockFund-' + id,
+                  format: 'jpg',
+                  quality: 0.9,
+                }}>
+                <ImageBackground source={bg} style={styles.recipt}>
+                  <View style={styles.reciptBody}>
+                    <View>
+                      <H4 text="Our Valuable Fund Raiser:" />
+                      <H2 text={user.name} />
+                    </View>
+                    <View>
+                      <H4 text="Funded to:" />
+                      <H2 text={data.recipient} />
+                    </View>
+                  </View>
 
-              <Para text={'Date: ' + data.completedAt} />
-              <Para text={'Category: ' + gold} />
+                  <Para text={'Date: ' + data.completedAt} />
+                  <Para text={'Category: ' + receiptType} />
 
-              <View style={styles.reciptFooter}>
-                <IconBtn icon="ethereum" size={50} />
-                <View>
-                  <H2 text={'ETH: ' + data.amount} />
-                  <H4 text="NFT Ref ID# " />
-                </View>
-              </View>
-            </ImageBackground>
-          </View>
+                  <View style={styles.reciptFooter}>
+                    <IconBtn icon="ethereum" size={50} />
+                    <View>
+                      <H2 text={'ETH: ' + data.amount} />
+                      {data.ethRate && data.dollarRate && (
+                        <H4
+                          text={
+                            'PKR Ex: ' +
+                            (
+                              data.amount *
+                              data?.ethRate *
+                              data?.dollarRate
+                            ).toFixed(3)
+                          }
+                        />
+                      )}
+                      {/* <H4 text="NFT Ref ID# " /> */}
+                    </View>
+                  </View>
+                </ImageBackground>
+              </ViewShot>
+            </View>
+          )}
         </ScrollView>
       </View>
     </BG2>

@@ -17,8 +17,8 @@ const TransactionNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Transactions">
-      <Stack.Screen name="Transactions" component={Transactions} />
+      initialRouteName="TRANSACTION">
+      <Stack.Screen name="TRANSACTION" component={Transactions} />
       <Stack.Screen name="TransactionsView" component={TransactionsView} />
     </Stack.Navigator>
   );

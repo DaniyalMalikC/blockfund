@@ -12,7 +12,6 @@ import {globalStyles} from '../../../util/globalStyles';
 
 const InputField = props => {
   const {
-    disabled,
     style,
     mode,
     secureTextEntry,
@@ -23,13 +22,7 @@ const InputField = props => {
     rightImg,
     rightBtnPress,
     title,
-    label,
     placeholder,
-    value,
-    onChangeText,
-    keyboardType,
-    multiline,
-    numberOfLines,
   } = props;
   return (
     <View style={!title && {marginVertical: 5}}>
@@ -39,18 +32,12 @@ const InputField = props => {
         </View>
       )}
       <TextInput
-        disabled={disabled}
+        {...props}
         placeholder={placeholder || title}
-        label={label}
-        value={value}
-        onChangeText={onChangeText}
         theme={theme}
         style={[style || {backgroundColor: colors.placeholder}]}
         mode={mode || 'outlined'}
         secureTextEntry={secureTextEntry || false}
-        keyboardType={keyboardType}
-        multiline={multiline}
-        numberOfLines={numberOfLines}
         left={
           (leftIcon || leftImg) && (
             <TextInput.Icon

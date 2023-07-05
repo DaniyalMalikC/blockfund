@@ -51,6 +51,9 @@ const MetaMaskContextProvider = ({children}) => {
   const [chain, setChain] = useState();
   const [balance, setBalance] = useState();
 
+  const contractAddress = '0x7EdB564C83B4E2DEaf6d07cA247c5BF78D034668';
+  const NFTContractAddress = '0x167063054466b95cAbc09d268F7187c6731dbeD1';
+
   const getBalance = async () => {
     console.log('GET BALANCE => ', ethereum.selectedAddress);
 
@@ -311,39 +314,41 @@ const MetaMaskContextProvider = ({children}) => {
       firestore()
         .collection('Transactions')
         .where('userId', '==', user.uid)
-        .orderBy('createdAt', 'desc')
+        // .orderBy('createdAt', 'desc')
         .onSnapshot(docSnap => {
           if (docSnap && !docSnap?.empty) {
             const dataSet = docSnap.docs.map(data => {
               const transaction = data.data();
+              console.log('transaction => ', transaction);
               return {
                 transactionId: data.id,
                 amount: transaction.amount,
                 recipient: transaction.recepient,
-                completedAt: transaction.completedAt
-                  ? GeneralUtil.datetimeFormatter(
-                      transaction.completedAt?.toDate(),
-                      true,
-                    )
-                  : 'Pending',
-                approvedAt: transaction.completedAt
-                  ? GeneralUtil.datetimeFormatter(
-                      transaction.approvedAt?.toDate(),
-                      true,
-                    )
-                  : 'Pending',
-                createdAt: transaction.completedAt
-                  ? GeneralUtil.datetimeFormatter(
-                      transaction.createdAt?.toDate(),
-                      true,
-                    )
-                  : 'Pending',
+                claimed: transaction.claimed,
+                ethRate: transaction.ethRate,
+                dollarRate: transaction.dollarRate,
+                completedAt: GeneralUtil.transactionStatus(
+                  transaction?.completedAt,
+                ),
+                approvedAt: GeneralUtil.transactionStatus(
+                  transaction?.approvedAt,
+                ),
+                createdAt: GeneralUtil.transactionStatus(
+                  transaction?.createdAt,
+                ),
               };
             });
             setTransactions(dataSet);
           }
         });
     }
+  };
+
+  const updateClaimedTransection = async transactionId => {
+    await firestore()
+      .collection('Transactions')
+      .doc(transactionId)
+      .update({claimed: true});
   };
 
   useEffect(() => {
@@ -354,6 +359,8 @@ const MetaMaskContextProvider = ({children}) => {
   return (
     <MetaMaskContext.Provider
       value={{
+        NFTContractAddress,
+        contractAddress,
         ethAddress,
         connected,
         transactions,
@@ -375,6 +382,7 @@ const MetaMaskContextProvider = ({children}) => {
           connect,
           exampleRequest,
           sign,
+          updateClaimedTransection,
         }}>
         {children}
       </MetaMaskAction.Provider>
